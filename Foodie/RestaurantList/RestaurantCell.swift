@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct RestaurantCell: View {
-    @StateObject var model: RestaurantCellVM
+    @ObservedObject var model: RestaurantCellVM
     
     var body: some View {
         HStack {
-            StarView(starRating: Review.averageStarRating(reviews:model.restaurant.reviews?.allObjects as? [Review] ?? []))
+            StarView(model: StarViewVM(starRating: Review.averageStarRating(reviews: model.restaurant.reviews?.allObjects as? [Review] ?? [])))
             VStack() {
                 Text(model.restaurant.name ?? "")
                 Text(model.restaurant.cuisineType?.name ?? "")
@@ -32,8 +32,15 @@ struct RestaurantCell: View {
     }
 }
 
-//struct RestaurantCell_Previews: PreviewProvider {
-//    static var previews: some View {
-//        RestaurantCell(model: RestaurantCellVM(restaurant: Restaurant()))
-//    }
-//}
+struct RestaurantCell_Previews: PreviewProvider {
+    static var previews: some View {
+        let context = PersistenceController.shared.container.viewContext
+        let restaurant = Restaurant(context: context)
+        restaurant.name = "Boise Fry Company"
+        let review = Review(context: context)
+        review.starRating = 4
+        review.notes = "good stuff"
+        review.restaurant = restaurant
+        return RestaurantCell(model: RestaurantCellVM(restaurant: restaurant))
+    }
+}
