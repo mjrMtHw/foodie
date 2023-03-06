@@ -59,8 +59,12 @@ struct AddReviewView: View {
     }
 }
 
+//FIXME: can't preview
 //struct AddReviewView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        AddReviewView(restaurant: Restaurant())
+//        let context  = PersistenceController.shared.container.viewContext
+//        let restaurant = Restaurant(context: context)
+//        restaurant.name = "Boise Fry Company"
+//        return AddReviewView(restaurant: restaurant).environment(\.managedObjectContext, context)
 //    }
 //}
